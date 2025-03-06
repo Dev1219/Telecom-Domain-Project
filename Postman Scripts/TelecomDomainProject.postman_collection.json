@@ -1,0 +1,759 @@
+{
+	"info": {
+		"_postman_id": "0e4a0f0a-a8b5-4351-ad11-d38c2a5085a3",
+		"name": "TelecomDomainProject",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40616391"
+	},
+	"item": [
+		{
+			"name": "Add New User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//const pm = require('postman');\r",
+							"const expect = require('chai').expect;\r",
+							"// Test Case 1: Add New User\r",
+							"\r",
+							"pm.test(\"Add New User - Verify Status Code 201\", ()=>{\r",
+							"    \r",
+							"    pm.expect(pm.response.code).to.eql(201); \r",
+							"    \r",
+							"});\r",
+							"pm.test(\"Add New User - Verify Status Message Created\", ()=>{\r",
+							"    \r",
+							"    pm.expect(pm.response.status).to.eql(\"Created\"); \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Add New User - Verify token\", ()=>{\r",
+							"    \r",
+							"   // Get the Response\r",
+							"let jsonData = pm.response.json();\r",
+							"console.log(\"Response is: \", jsonData);\r",
+							"\r",
+							"// Expect the response to have a \"token\" property\r",
+							"pm.expect(jsonData).to.have.property(\"token\");\r",
+							"\r",
+							"// Set Environment Variable\r",
+							"pm.environment.set(\"auth_token\", jsonData.token);\r",
+							"\r",
+							"// Print Token in Console\r",
+							"console.log(\"Generated Token: \", jsonData.token);\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n\"firstName\": \"Test\", \r\n\"lastName\": \"User\", \r\n\"email\": \"test23457791345799@test.com\", \r\n\"password\": \"myPassword\" \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://thinking-tester-contact-list.herokuapp.com/users",
+					"protocol": "https",
+					"host": [
+						"thinking-tester-contact-list",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User Profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const expect = require('chai').expect;\r",
+							"\r",
+							"// Test Case 2: Get User Profile\r",
+							"\r",
+							"pm.test(\"Get User Profile - Verify Status Code 200 \",()=>{\r",
+							"\r",
+							"    pm.expect(pm.response.code).to.eql(200);\r",
+							"\r",
+							"    \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Get User Profile - Verify Status Message OK \",()=>{\r",
+							"\r",
+							"    pm.expect(pm.response.status).to.eql(\"OK\");\r",
+							"\r",
+							"    \r",
+							"});\r",
+							"pm.test(\"Get User Profile - Verify Message email \",()=>{\r",
+							"\r",
+							"   let jsonData = pm.response.json();\r",
+							"   console.log(\"User Profile Response: \", jsonData);\r",
+							"\r",
+							"   expect(jsonData).to.have.property(\"email\");\r",
+							"\r",
+							"    \r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{auth_token}}",
+						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://thinking-tester-contact-list.herokuapp.com/users/me",
+					"protocol": "https",
+					"host": [
+						"thinking-tester-contact-list",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"users",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const expect = require('chai').expect;\r",
+							"// Test Case 3: Update User\r",
+							"pm.test(\"Update User - Verify Status Code 200 \",()=>{\r",
+							"\r",
+							"    pm.expect(pm.response.code).to.eql(200);\r",
+							"\r",
+							"    \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Update User - Verify Status Message OK \",()=>{\r",
+							"\r",
+							"    pm.expect(pm.response.status).to.eql(\"OK\");\r",
+							"\r",
+							"    \r",
+							"});\r",
+							"pm.test(\"Update User - Verify email \",()=>{\r",
+							"\r",
+							"   let jsonData = pm.response.json();\r",
+							"   expect(jsonData).to.have.property(\"email\", \"test_unique_11345698@fake.com\");\r",
+							"   \r",
+							"   //Print Response on Console\r",
+							"   console.log(\"Response is: \", jsonData);\r",
+							"\r",
+							"    \r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "au",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{auth_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n\"firstN ame\": \"Updated\", \r\n\"lastName\": \"Username\", \r\n\"email\": \"test_unique_11345698@fake.com\" ,\r\n\"password\": \"myNewPassword\" \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://thinking-tester-contact-list.herokuapp.com/users/me",
+					"protocol": "https",
+					"host": [
+						"thinking-tester-contact-list",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"users",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Log In User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const expect = require('chai').expect;\r",
+							"\r",
+							"// Test Case 4: Log in User\r",
+							"\r",
+							"pm.test(\"Login In User - Verify Status Code 200 \",()=>{\r",
+							"\r",
+							"    pm.expect(pm.response.code).to.eql(200);\r",
+							"\r",
+							"    \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Login In User - Verify Status Message OK \",()=>{\r",
+							"\r",
+							"    pm.expect(pm.response.status).to.eql(\"OK\");\r",
+							"\r",
+							"    \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Log In User - Verify Token \", ()=> {\r",
+							"\r",
+							"    let jsonData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(jsonData).to.have.property(\"token\");\r",
+							"    \r",
+							"    // Store token in environment for further requests\r",
+							"    if (jsonData.token) {\r",
+							"        pm.environment.set(\"auth_token\", jsonData.token);\r",
+							"        console.log(\"New Token:\", jsonData.token);\r",
+							"    } else {\r",
+							"        console.log(\"Token not found in response!\");\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n\"email\": \"test2@fake.com\", \r\n\"password\": \"myNewPassword\" \r\n \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://thinking-tester-contact-list.herokuapp.com/users/login",
+					"protocol": "https",
+					"host": [
+						"thinking-tester-contact-list",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Contact",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const expect = require('chai').expect;\r",
+							"\r",
+							"// Test Case 5: Add Contact\r",
+							"\r",
+							"pm.test(\"Add Contact - Verify Status Code 201 \",()=>{\r",
+							"\r",
+							"    pm.expect(pm.response.code).to.eql(201);\r",
+							"\r",
+							"    \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Add Contact - Verify Status Message Created \",()=>{\r",
+							"\r",
+							"    pm.expect(pm.response.status).to.eql(\"Created\");\r",
+							"\r",
+							"    \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Add Contact - Verify ID \",()=>{\r",
+							"\r",
+							"    let jsonData = pm.response.json();\r",
+							"    console.log(\"response is: \", jsonData)\r",
+							"    expect(jsonData).to.have.property(\"_id\");\r",
+							"    pm.environment.set(\"contact_id\", jsonData._id);\r",
+							"\r",
+							"    \r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{auth_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n\"firstName\": \"John\", \r\n\"lastName\": \"Doe\", \r\n\"birthdate\": \"1970-01-01\", \r\n\"email\": \"jdoe@fake.com\", \r\n\"phone\": \"8005555555\", \r\n\"street1\": \"1 Main St.\", \r\n\"street2\": \"Apartment A\", \r\n\"city\": \"Anytown\", \r\n\"stateProvince\": \"KS\", \r\n\"postalCode\": \"12345\", \r\n\"country\": \"USA\" \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://thinking-tester-contact-list.herokuapp.com/contacts",
+					"protocol": "https",
+					"host": [
+						"thinking-tester-contact-list",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"contacts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Contact List",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const expect = require('chai').expect;\r",
+							"\r",
+							"// Test Case 6: Get Contact List\r",
+							"\r",
+							"pm.test(\"Get Contact List - Verify Status Code 200 \",()=>{\r",
+							"\r",
+							"    pm.expect(pm.response.code).to.eql(200);\r",
+							"\r",
+							"    \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Get Contact List - Verify Status Message OK \",()=>{\r",
+							"\r",
+							"    pm.expect(pm.response.status).to.eql(\"OK\");\r",
+							"\r",
+							"    \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Get Contact List - Verify Contact List is Array \",()=>{\r",
+							"\r",
+							"    let jsonData = pm.response.json();\r",
+							"    expect(jsonData).to.be.an(\"array\");\r",
+							"    \r",
+							"    //Print Resposnse on Console\r",
+							"\r",
+							"    console.log(\"Contact List is: \", jsonData)\r",
+							"\r",
+							"    \r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{auth_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://thinking-tester-contact-list.herokuapp.com/contacts",
+					"protocol": "https",
+					"host": [
+						"thinking-tester-contact-list",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"contacts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Contact",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const expect = require('chai').expect;\r",
+							"\r",
+							"// Test Case 7: Get Contact \r",
+							"\r",
+							"pm.test(\"Get Contact - Verify Status Code 200 \",()=>{\r",
+							"\r",
+							"    pm.expect(pm.response.code).to.eql(200);\r",
+							"\r",
+							"    \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Get Contact - Verify Status Message OK \",()=>{\r",
+							"\r",
+							"    pm.expect(pm.response.status).to.eql(\"OK\");\r",
+							"\r",
+							"    \r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Get Contact - Verify Contact ID\", () => {\r",
+							"    let jsonData = pm.response.json();\r",
+							"\r",
+							"    // Print Response in Console\r",
+							"    console.log(\"Contact Is: \", jsonData);\r",
+							"\r",
+							"    // Ensure the response is an array\r",
+							"    pm.expect(jsonData).to.be.an('array').that.is.not.empty;\r",
+							"\r",
+							"    // Check if any contact has the stored contact ID\r",
+							"    let contactId = pm.environment.get(\"contact_id\");\r",
+							"    let contactExists = jsonData.some(contact => contact._id === contactId);\r",
+							"\r",
+							"    // Assert that the contact exists in the list\r",
+							"    pm.expect(contactExists).to.be.true;\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{auth_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://thinking-tester-contact-list.herokuapp.com/contacts/",
+					"protocol": "https",
+					"host": [
+						"thinking-tester-contact-list",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"contacts",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Contact",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const expect = require('chai').expect;\r",
+							"\r",
+							"//// Test Case 8: Update Contact \r",
+							"\r",
+							"// Check if API is available before running tests\r",
+							"pm.test(\"Check API Availability Before Updating Contact\", () => {\r",
+							"    pm.expect(pm.response.code).to.not.eql(503, \"API is unavailable. Check if Contact ID exists.\");\r",
+							"});\r",
+							"\r",
+							"// Test Case: Update Contact - Status Code\r",
+							"pm.test(\"Update Contact - Verify Status Code 200\", () => {\r",
+							"    pm.expect(pm.response.code).to.eql(200, \"Expected status code 200 but received \" + pm.response.code);\r",
+							"});\r",
+							"\r",
+							"// Test Case: Update Contact - Verify Status Message\r",
+							"pm.test(\"Update Contact - Verify Status Message OK\", () => {\r",
+							"    pm.expect(pm.response.status).to.eql(\"OK\", \"Expected status OK but received \" + pm.response.status);\r",
+							"});\r",
+							"\r",
+							"// Test Case: Update Contact - Verify Updated Email\r",
+							"pm.test(\"Update Contact - Verify Updated Email\", () => {\r",
+							"    let jsonData = pm.response.json();\r",
+							"\r",
+							"    // Print response for debugging\r",
+							"    console.log(\"Update Contact Response:\", jsonData);\r",
+							"\r",
+							"    // Ensure response contains the expected email\r",
+							"    pm.expect(jsonData).to.have.property(\"email\", \"amiller@fake.com\", \"Email not updated correctly\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{auth_token}}",
+						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n\"firstName\": \"Amy\", \r\n\"lastName\": \"Miller\",\r\n\"birthdate\": \"1992-02-02\", \r\n\"email\": \"amiller@fake.com\", \r\n\"phone\": \"8005554242\", \r\n\"street1\": \"13 School St.\", \r\n\"street2\": \"Apt. 5\", \r\n\"city\": \"Washington\", \r\n\"stateProvince\": \"QC\", \r\n\"postalCode\": \"A1A1A1\", \r\n\"country\": \"Canada\" \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://thinking-tester-contact-list.herokuapp.com/contacts/{{contact_id}}",
+					"protocol": "https",
+					"host": [
+						"thinking-tester-contact-list",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"contacts",
+						"{{contact_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Contact  Partially",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const expect = require('chai').expect;\r",
+							"\r",
+							"// Test Case 9: Update Contact Partially \r",
+							"\r",
+							"// Check if API is available before running tests\r",
+							"pm.test(\"Check API Availability Before Updating Partial Contact\", () => {\r",
+							"    pm.expect(pm.response.code).to.not.eql(503, \"API is unavailable. Check if Contact ID exists.\");\r",
+							"});\r",
+							"\r",
+							"// Test Case: Update Partial Contact - Verify Status Code\r",
+							"pm.test(\"Update Partial Contact - Verify Status Code 200\", () => {\r",
+							"    pm.expect(pm.response.code).to.eql(200, \"Expected status code 200 but received \" + pm.response.code);\r",
+							"});\r",
+							"\r",
+							"// Test Case: Update Partial Contact - Verify Status Message\r",
+							"pm.test(\"Update Partial Contact - Verify Status Message OK\", () => {\r",
+							"    pm.expect(pm.response.status).to.eql(\"OK\", \"Expected status OK but received \" + pm.response.status);\r",
+							"});\r",
+							"\r",
+							"// Test Case: Update Partial Contact - Verify Updated First Name\r",
+							"pm.test(\"Update Partial Contact - Verify Updated First Name\", () => {\r",
+							"    let jsonData = pm.response.json();\r",
+							"\r",
+							"    // Print response for debugging\r",
+							"    console.log(\"Update Partial Contact Response:\", jsonData);\r",
+							"\r",
+							"    // Ensure response contains the expected first name\r",
+							"    pm.expect(jsonData).to.have.property(\"firstName\", \"Anna\", \"First Name not updated correctly\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{auth_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n\"firstName\": \"Anna\" \r\n} ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://thinking-tester-contact-list.herokuapp.com/contacts/{{contact_id}}",
+					"protocol": "https",
+					"host": [
+						"thinking-tester-contact-list",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"contacts",
+						"{{contact_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const expect = require('chai').expect;\r",
+							"\r",
+							"// Test Case 10: Logout User\r",
+							"\r",
+							"pm.test(\"LogOut User - Verify Status Code 200 \",()=>{\r",
+							"\r",
+							"    pm.expect(pm.response.code).to.eql(200);\r",
+							"\r",
+							"    \r",
+							"});\r",
+							"\r",
+							"pm.test(\"LogOut User - Verify Status Message OK \",()=>{\r",
+							"\r",
+							"    pm.expect(pm.response.status).to.eql(\"OK\");\r",
+							"\r",
+							"    \r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{auth_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://thinking-tester-contact-list.herokuapp.com/users/logout",
+					"protocol": "https",
+					"host": [
+						"thinking-tester-contact-list",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"users",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
