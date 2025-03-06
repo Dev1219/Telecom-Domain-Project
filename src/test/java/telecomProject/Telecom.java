@@ -1,8 +1,13 @@
 package telecomProject;
 
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
-
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
@@ -13,6 +18,7 @@ import static org.hamcrest.Matchers.*;
 import static org.testng.Assert.assertEquals;
 
 import org.testng.Assert;
+import org.testng.ITestResult;
 
 import io.restassured.response.Response;
 
@@ -20,10 +26,37 @@ public class Telecom {
 	
 	String authToken;
 	String contactId;
+	public static ExtentReports extent;
+    public static ExtentTest test;
+    
+  @BeforeSuite
+  public void setupExtent() {
+        ExtentSparkReporter sparkReporter = new ExtentSparkReporter("test-output/ExtentReport.html");
+        extent = new ExtentReports();
+        extent.attachReporter(sparkReporter);
+        extent.setSystemInfo("Tester", "Devendra Kumar Vatsa");
+ }
+    
+  @AfterSuite
+  public void tearDown() {
+        extent.flush();
+}
+  
+  @AfterMethod
+  public void logTestResults(ITestResult result) {
+      if (result.getStatus() == ITestResult.FAILURE) {
+          test.fail("Test Failed: " + result.getThrowable());
+      } else if (result.getStatus() == ITestResult.SUCCESS) {
+          test.pass("Test Passed");
+      } else if (result.getStatus() == ITestResult.SKIP) {
+          test.skip("Test Skipped");
+      }
+  }
 	
   @Test (priority=1)
   public void addNewUser() {
 	  
+	  test = extent.createTest("Add New User");
 	  System.out.println("Test for Add New User: ");
 	  
 	  Response res = given()
@@ -31,7 +64,7 @@ public class Telecom {
 			  .body("{ \n"
 			  		+ "\"firstName\": \"Test\", \n"
 			  		+ "\"lastName\": \"User\", \n"
-			  		+ "\"email\": \"testing685659@test.com\", \n"
+			  		+ "\"email\": \"testing8856598@test.com\", \n"
 			  		+ "\"password\": \"myPassword\" \n"
 			  		+ "}")
 			  .when().post("https://thinking-tester-contact-list.herokuapp.com/users");
@@ -61,6 +94,7 @@ public class Telecom {
   
   public void getUserProfile() {
 	  
+	  test = extent.createTest("Get User Profile");
 	  System.out.println("\nTest for Get User Profile: ");
 	  
 	  Response res = given()
@@ -91,6 +125,7 @@ public class Telecom {
   
   public void updateUser() {
 	  
+	  test = extent.createTest("Update User");
 	  System.out.println("\nTest For Update User: ");
 	  
 	  Response res = given()
@@ -99,7 +134,7 @@ public class Telecom {
               .body("{ \n"
               		+ "\"firstName\": \"Updated\", \n"
               		+ "\"lastName\": \"Username\", \n"
-              		+ "\"email\": \"testing685659@test.com\", \n"
+              		+ "\"email\": \"testing856598@test.com\", \n"
               		+ "\"password\": \"myNewPassword\" \n"
               		+ "}")
               .when().patch("https://thinking-tester-contact-list.herokuapp.com/users/me");
@@ -118,7 +153,7 @@ public class Telecom {
 	 //Validate Email
 	 
 	 String email = res.jsonPath().getString("email");
-     Assert.assertEquals(email, "testing685659@test.com", "Email did not update");
+     Assert.assertEquals(email, "testing856598@test.com", "Email did not update");
 	  
 	  
   }
@@ -127,13 +162,14 @@ public class Telecom {
   
   public void loginUser() {
 	  
+	  test = extent.createTest("Login User");
 	  System.out.println("\nTest for Login User: ");
 	  Response res = given()
               .contentType("application/json")
               .body("{ \n"
               		+ " \n"
               		+ " \n"
-              		+ "\"email\": \"testing685659@test.com\", \n"
+              		+ "\"email\": \"testing856598@test.com\", \n"
               		+ "\"password\": \"myNewPassword\" \n"
               		+ " \n"
               		+ "}")
@@ -163,6 +199,7 @@ public class Telecom {
   
   public void addContact() {
 	  
+	  test = extent.createTest("Add Contact");
 	  System.out.println("\n Test For Add Contact: ");
 	  
 	  Response res = given()
@@ -206,6 +243,7 @@ public class Telecom {
   
   public void getContactList() {
 	  
+	  test = extent.createTest("Get Contact List");
 	  System.out.println("\n Test For Get Contact List: ");
 	  
 	  Response res = given()
@@ -234,6 +272,7 @@ public class Telecom {
   
   public void getContact() {
 	  
+	  test = extent.createTest("Get Contact");
 	  System.out.println("\nTest For Get Contact: ");
 	  Response res = given()
               .header("Authorization", "Bearer " + authToken)
@@ -262,6 +301,9 @@ public class Telecom {
   @Test (priority=8)
   
   public void updateContact() {
+	  
+	  test = extent.createTest("Update Contact");
+	  System.out.println("\nTest For Update Contact: ");
 	  
 	  Response res = given()
               .header("Authorization", "Bearer " + authToken)
@@ -305,6 +347,9 @@ public class Telecom {
   @Test (priority=9)
   public void updateContactPartial() {
 	  
+	  test = extent.createTest("Update Contact Partial");
+	  System.out.println("\nTest For Update Contact Partially: ");
+	  
 	  Response res = given()
               .header("Authorization", "Bearer " + authToken)
               .contentType("application/json")
@@ -335,6 +380,7 @@ public class Telecom {
   @Test (priority=10)
   public void logoutUser() {
 	  
+	  test = extent.createTest("Logout User");
 	  System.out.println("\nTest For Logout User");
 	  
 	  Response res = given()

@@ -5,6 +5,9 @@
     <classes>
       <class name="telecomProject.Telecom">
         <methods>
+          <include name="setupExtent"/>
+          <include name="logTestResults"/>
+          <include name="tearDown"/>
           <include name="loginUser"/>
         </methods>
       </class> <!-- telecomProject.Telecom -->
